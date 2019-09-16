@@ -37,5 +37,6 @@ public class PricingServiceApplicationTests {
 		assertTrue(price.isPresent());
 		assertTrue(price.get().getPrice() != null);
 		assertTrue(price.get().getCurrency() != null);
+		assertTrue(price.get().getVehicleId() != null);
 	}
 }
