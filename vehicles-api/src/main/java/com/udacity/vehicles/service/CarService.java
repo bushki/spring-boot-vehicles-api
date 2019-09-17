@@ -119,11 +119,15 @@ public class CarService {
          *   If it does not exist, throw a CarNotFoundException
          */
 
+        Optional<Car> optionalCar = repository.findById(id);
+        if(!optionalCar.isPresent()) {
+            throw new CarNotFoundException("Car with id: " + id + " not found." );
+        }
 
         /**
          * TODO: Delete the car from the repository.
          */
 
-
+        repository.delete(optionalCar.get());
     }
 }
