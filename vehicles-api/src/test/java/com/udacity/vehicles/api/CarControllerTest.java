@@ -99,6 +99,12 @@ public class CarControllerTest {
          *   below (the vehicle will be the first in the list).
          */
 
+        mvc.perform(
+                get(new URI("/cars"))
+                        .accept(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$._embedded.carList", Matchers.hasSize(1)))
+                .andExpect(jsonPath("$._embedded.carList[0].details.body").value(getCar().getDetails().getBody()))
+                .andExpect(jsonPath("$._embedded.carList[0].location.lat").value(getCar().getLocation().getLat()));
     }
 
     /**
@@ -115,7 +121,10 @@ public class CarControllerTest {
         mvc.perform(
                 get(new URI("/cars/1"))
                         .accept(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$.id").value(1));
+                .andExpect(jsonPath("$.details.body").value(getCar().getDetails().getBody()))
+                .andExpect(jsonPath("$.details.model").value(getCar().getDetails().getModel()))
+                .andExpect(jsonPath("$.details.numberOfDoors").value(getCar().getDetails().getNumberOfDoors()));
+
     }
 
     /**
