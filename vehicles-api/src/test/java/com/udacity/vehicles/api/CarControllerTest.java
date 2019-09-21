@@ -98,13 +98,13 @@ public class CarControllerTest {
          *   the whole list of vehicles. This should utilize the car from `getCar()`
          *   below (the vehicle will be the first in the list).
          */
-
+        Car testCar = getCar();
         mvc.perform(
                 get(new URI("/cars"))
                         .accept(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$._embedded.carList", Matchers.hasSize(1)))
-                .andExpect(jsonPath("$._embedded.carList[0].details.body").value(getCar().getDetails().getBody()))
-                .andExpect(jsonPath("$._embedded.carList[0].location.lat").value(getCar().getLocation().getLat()));
+                .andExpect(jsonPath("$._embedded.carList[0].details.body").value(testCar.getDetails().getBody()))
+                .andExpect(jsonPath("$._embedded.carList[0].location.lat").value(testCar.getLocation().getLat()));
     }
 
     /**
@@ -117,13 +117,13 @@ public class CarControllerTest {
          * TODO: Add a test to check that the `get` method works by calling
          *   a vehicle by ID. This should utilize the car from `getCar()` below.
          */
-
+        Car testCar = getCar();
         mvc.perform(
                 get(new URI("/cars/1"))
                         .accept(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$.details.body").value(getCar().getDetails().getBody()))
-                .andExpect(jsonPath("$.details.model").value(getCar().getDetails().getModel()))
-                .andExpect(jsonPath("$.details.numberOfDoors").value(getCar().getDetails().getNumberOfDoors()));
+                .andExpect(jsonPath("$.details.body").value(testCar.getDetails().getBody()))
+                .andExpect(jsonPath("$.details.model").value(testCar.getDetails().getModel()))
+                .andExpect(jsonPath("$.details.numberOfDoors").value(testCar.getDetails().getNumberOfDoors()));
 
     }
 
@@ -138,6 +138,13 @@ public class CarControllerTest {
          *   when the `delete` method is called from the Car Controller. This
          *   should utilize the car from `getCar()` below.
          */
+
+        Car testCar = getCar();
+        testCar.setId(1L);
+        mvc.perform(
+                delete(new URI("/cars/" + testCar.getId()))
+                        .accept(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isNoContent());
     }
 
     /**
