@@ -6,6 +6,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -125,6 +126,19 @@ public class CarControllerTest {
                 .andExpect(jsonPath("$.details.model").value(testCar.getDetails().getModel()))
                 .andExpect(jsonPath("$.details.numberOfDoors").value(testCar.getDetails().getNumberOfDoors()));
 
+    }
+
+    @Test
+    public void updateCar() throws Exception {
+        Car testCar = getCar();
+        String newModel = "Corvette";
+        testCar.getDetails().setModel(newModel);
+        mvc.perform(
+                put(new URI("/cars/1"))
+                        .content(json.write(testCar).getJson())
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .accept(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk());
     }
 
     /**
